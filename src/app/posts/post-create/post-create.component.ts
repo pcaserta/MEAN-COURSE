@@ -1,8 +1,15 @@
 import { Component, OnInit } from "@angular/core";
-import { Post } from "../post.model";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { PostService } from "../posts.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  NG_ASYNC_VALIDATORS,
+} from "@angular/forms";
+
+import { PostService } from "../posts.service";
+import { Post } from "../post.model";
+import { mimeType } from "./mime-type.validator";
 
 @Component({
   selector: "app-post-create",
@@ -12,9 +19,12 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 export class PostCreateComponent implements OnInit {
   private mode = "create";
   private postId: string;
+
   post: Post;
   isLoading = false;
   form: FormGroup;
+  imagePreview: string;
+
   constructor(private postService: PostService, public route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -27,6 +37,7 @@ export class PostCreateComponent implements OnInit {
       }),
       image: new FormControl(null, {
         validators: [Validators.required],
+        asyncValidators: [mimeType],
       }),
     });
 
@@ -58,6 +69,11 @@ export class PostCreateComponent implements OnInit {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ image: file });
     this.form.get("image").updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
   }
   onSavePost() {
     if (this.form.invalid) {
