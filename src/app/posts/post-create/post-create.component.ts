@@ -22,17 +22,14 @@ export class PostCreateComponent implements OnInit {
         this.mode = "edit";
         this.postId = paramMap.get("postId");
         this.isLoading = true;
-        console.log(this.postId);
         this.postService.getPost(this.postId).subscribe((postData) => {
+          this.isLoading = false;
           this.post = {
             id: postData._id,
             title: postData.title,
             content: postData.content,
           };
         });
-        this.isLoading = true;
-        console.log(this.post);
-        console.log(this.mode);
       } else {
         this.mode = "create";
         this.postId = null;
@@ -43,6 +40,7 @@ export class PostCreateComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+    this.isLoading = true;
     if (this.mode === "create") {
       console.log("in create");
       const post: Post = {
