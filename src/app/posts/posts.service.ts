@@ -6,6 +6,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { stringify } from "querystring";
+import { Title } from '@angular/platform-browser';
 
 @Injectable({ providedIn: "root" })
 export class PostService {
@@ -39,16 +40,19 @@ export class PostService {
     return this.postsUpdated.asObservable();
   }
 
-  addPost(post: Post) {
+  addPost(title, content, image: File) {
+    const postData = new FormData();
+    postData.append("title", title);
+    postData.append("content", content);
+    postData.append("image", image, title);
     this.http
       .post<{ message: string; postId: string }>(
         "http://localhost:3000/api/posts",
-        post
+        postData
       )
       .subscribe((responseData) => {
-        console.log(responseData);
-        const postId = responseData.postId;
-        post.id = responseData.postId;
+        const post:Post = {id:responseData.postId, title:title, content: content}
+
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
         this.router.navigate(["/"]);
