@@ -1,11 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, ParamMap } from "@angular/router";
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  NG_ASYNC_VALIDATORS,
-} from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { PostService } from "../posts.service";
 import { Post } from "../post.model";
@@ -52,6 +47,7 @@ export class PostCreateComponent implements OnInit {
             id: postData._id,
             title: postData.title,
             content: postData.content,
+            imagePath: null,
           };
           this.form.setValue({
             title: this.post.title,
@@ -82,11 +78,6 @@ export class PostCreateComponent implements OnInit {
     this.isLoading = true;
     if (this.mode === "create") {
       console.log("in create");
-      const post: Post = {
-        id: null,
-        title: this.form.value.title,
-        content: this.form.value.content,
-      };
       this.postService.addPost(
         this.form.value.title,
         this.form.value.content,
