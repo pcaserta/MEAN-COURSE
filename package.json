@@ -2,13 +2,11 @@
   "name": "mean-course",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "start:server": "nodemon server.js"
+    "start": " npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon server --ignore 'client/*'\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "ng serve --open"
   },
   "private": true,
   "dependencies": {
