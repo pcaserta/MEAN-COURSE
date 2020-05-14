@@ -1,6 +1,7 @@
 import { AbstractControl } from "@angular/forms";
 import { Observable, Observer, of } from "rxjs";
 
+//This validates file type to be an image
 export const mimeType = (
   control: AbstractControl
 ): Promise<{ [key: string]: any }> | Observable<{ [key: string]: any }> => {
