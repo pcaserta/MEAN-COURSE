@@ -1,16 +1,16 @@
-const path = require("path")
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+require("dotenv/config")
 
 const postRoutes = require("./routes/posts");
 const app = express();
+const url = process.env.MONGO;
+
 
 mongoose
-  .connect(
-    "mongodb+srv://casertapm:Turtlesilike1@cluster0-lu4cx.mongodb.net/node-angular?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("connected to database!");
   })
@@ -20,7 +20,7 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use("/images", express.static(path.join("backend/images")))
+app.use("/images", express.static(path.join("backend/images")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
