@@ -88,7 +88,7 @@ router.get("", (req, res, next) => {
     })
     .then((count) => {
       res.status(200).json({
-        message: "Posts fetched successfully",
+        message: "Posts fetched successfully!",
         posts: fetchedPosts,
         maxPosts: count,
       });
